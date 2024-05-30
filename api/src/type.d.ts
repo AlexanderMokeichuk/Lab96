@@ -1,4 +1,5 @@
 import {Model} from "mongoose";
+import Types = module;
 
 export interface User {
   email: string,
@@ -12,7 +13,26 @@ export interface User {
 
 export interface UserMethods {
   checkPassword(password: string): Promise<boolean>,
+
   generateToken(): void,
 }
 
 export type UserModel = Model<User, unknown, UserMethods>;
+
+export interface UserApi extends User {
+  _id: Types.ObjectId;
+}
+
+export interface Ingredient {
+  name: string;
+  quantity: string;
+}
+
+export interface Cocktail {
+  userID: Types.ObjectId;
+  name: string;
+  image: string | null;
+  recipe: string;
+  isPublished: boolean;
+  ingredients: Ingredient[];
+}
