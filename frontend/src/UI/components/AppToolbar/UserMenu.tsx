@@ -39,7 +39,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
       sx={{
         backgroundColor: "black",
         border: 2,
-        borderColor: "white",
+        borderColor: "#9932CC",
         width: 250,
         padding: 2,
         height: "100%",
@@ -55,6 +55,8 @@ const UserMenu: React.FC<Props> = ({user}) => {
           color: "white",
           display: "flex",
           gap: 3,
+          fontSize: 20,
+          fontWeight: "bold",
         }}
         >
           <strong>Role:</strong>
@@ -65,27 +67,10 @@ const UserMenu: React.FC<Props> = ({user}) => {
         display: "flex",
         flexDirection: "column",
       }}>
-        <Link to={"/track_history"} style={{textDecoration: "none", color: "#FFF"}}>
-          <Button color="inherit">
-            History tracks
-          </Button>
-        </Link>
 
-        <Link to={"/addNewArtist"} style={{textDecoration: "none", color: "#FFF"}}>
-          <Button color="inherit">
-            Add artist
-          </Button>
-        </Link>
-
-        <Link to={"/addNewAlbum"} style={{textDecoration: "none", color: "#FFF"}}>
-          <Button color="inherit">
-            Add album
-          </Button>
-        </Link>
-
-        <Link to={"/addNewTrack"} style={{textDecoration: "none", color: "#FFF"}}>
-          <Button color="inherit">
-            Add track
+        <Link to={"/addNewCocktail"} style={{textDecoration: "none", color: "#FFF"}}>
+          <Button variant={"outlined"} color="secondary">
+            Add Cocktail
           </Button>
         </Link>
       </List>
@@ -100,13 +85,14 @@ const UserMenu: React.FC<Props> = ({user}) => {
         <Button
           component={NavLink}
           to="/login"
-          color="inherit"
+          variant={"outlined"}
+          color="success"
           style={{color: "white"}}
         >
           Change account
         </Button>
 
-        <Button color="warning" onClick={handelLogout}>
+        <Button variant={"outlined"} color="error" onClick={handelLogout}>
           Logout
         </Button>
       </List>

@@ -13,10 +13,10 @@ import {deleteCocktail, editIsPublishCocktail, fetchCocktails} from "../../cockt
 
 interface Props {
   item: CocktailApi;
+  isPermissionsChecked?: boolean;
 }
 
-
-const CocktailCard: React.FC<Props> = ({item}) => {
+const CocktailCard: React.FC<Props> = ({item, isPermissionsChecked}) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
@@ -39,11 +39,14 @@ const CocktailCard: React.FC<Props> = ({item}) => {
   };
 
 
-  const permissionsCheck = PERMISSIONS_CHECK(user, item.isPublished);
+  let permissionsCheck = true;
+  if (isPermissionsChecked) {
+    permissionsCheck = PERMISSIONS_CHECK(user, item.isPublished);
+  }
 
   return (
     <Grid
-      container
+      item
       xs
       md={4}
       lg={3}

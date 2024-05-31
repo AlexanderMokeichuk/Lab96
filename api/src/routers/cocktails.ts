@@ -1,5 +1,5 @@
 import express, {Router} from "express";
-import auth from "../middleware/auth";
+import auth, {RequestWithUser} from "../middleware/auth";
 import {clearImages, imagesUpload} from "../multer";
 import mongoose from "mongoose";
 import Cocktail from "../models/ Cocktail";
@@ -12,13 +12,15 @@ cocktailsRouter.post(
   auth,
   imagesUpload.single("image"),
   async (req, res, next) => {
+    const user = (req as RequestWithUser).user!;
+
     try {
       const whiteList = {
-        userID: req.body.userID,
+        userID: user.id,
         name: req.body.name,
         image: req.file ? req.file.filename : null,
         recipe: req.body.recipe,
-        ingredients: req.body.ingredients,
+        ingredients:JSON.parse(req.body.ingredients.toString()),
       };
 
       const cocktail = new Cocktail(whiteList);

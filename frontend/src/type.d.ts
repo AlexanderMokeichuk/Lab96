@@ -40,11 +40,30 @@ export interface GlobalError {
   error: string;
 }
 
-export interface CocktailApi {
-  _id: string,
+export interface CocktailInForm {
+  name: string;
+  image: File | null;
+  recipe: string;
+}
+
+export interface Ingredient {
+  id: string,
+  name: string;
+  quantity: string;
+}
+
+export interface FullCocktailForm extends CocktailInForm{
+  ingredients: Ingredient[];
+}
+
+export interface Cocktail {
   userID: Types.ObjectId;
   name: string;
   image: string | null;
   recipe: string;
   isPublished: boolean;
+  ingredients: Ingredient[];
+}
+export interface CocktailApi extends Cocktail{
+  _id: string,
 }

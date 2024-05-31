@@ -24,6 +24,7 @@ export interface UserApi extends User {
 }
 
 export interface Ingredient {
+  id: string;
   name: string;
   quantity: string;
 }

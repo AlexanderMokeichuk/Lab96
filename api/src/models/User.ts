@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import mongoose, {HydratedDocument, Schema} from "mongoose";
 import {User, UserMethods, UserModel} from "../type";
-import {randomUUID} from "crypto";
+import {randomUUID} from 'crypto';
 
 const SALT_WORK_FACTOR = 10;
 

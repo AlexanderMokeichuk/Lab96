@@ -1,6 +1,24 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {CocktailApi} from "../../type";
+import {CocktailApi, FullCocktailForm} from "../../type";
 import axiosApi from "../../axiosApi";
+
+export const postCocktail = createAsyncThunk<void, FullCocktailForm>(
+  "cocktails/post",
+  async (cocktail) => {
+    try {
+      const formData = new FormData();
+      formData.append('name', cocktail.name);
+      if (cocktail.image) {
+        formData.append('image', cocktail.image);
+      }
+      formData.append('recipe', cocktail.recipe);
+      formData.append('ingredients', JSON.stringify(cocktail.ingredients));
+      await axiosApi.post('/cocktails', formData);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 
 export const fetchCocktails = createAsyncThunk<CocktailApi[], undefined>(
   "cocktails/fetchCocktails",
@@ -24,6 +42,19 @@ export const fetchMyCocktails = createAsyncThunk<CocktailApi[], string>(
     } catch (e) {
       console.log(e);
       return [];
+    }
+  },
+);
+
+export const fetchCocktailById = createAsyncThunk<CocktailApi | null, string>(
+  "cocktails/fetchCocktailsById",
+  async (id) => {
+    try {
+      const {data: response} = await axiosApi.get(`/cocktails/${id}`);
+      return response;
+    } catch (e) {
+      console.log(e);
+      return null;
     }
   },
 );

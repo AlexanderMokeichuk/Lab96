@@ -48,7 +48,7 @@ const Cocktails: React.FC = () => {
             }}>
               {check || user?.role === "admin"
                 ? cocktails.map((item) => {
-                  return <CocktailCard key={item._id} item={item}/>;
+                  return <CocktailCard key={item._id} isPermissionsChecked={true} item={item}/>;
                 })
                 : (
                   <OwnAlert>

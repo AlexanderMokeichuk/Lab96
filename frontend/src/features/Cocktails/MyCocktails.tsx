@@ -3,14 +3,17 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectUser} from "../Users/usersSlice";
 import {fetchMyCocktails} from "./cocktailsThunks";
 import {useNavigate} from "react-router-dom";
-import CocktailCard from "./components/CocktailCard/CocktailCard";
-import {selectCocktails} from "./cocktailsSlice";
+import {selectCocktails, selectCocktailsLauding} from "./cocktailsSlice";
 import {Grid} from "@mui/material";
+import CocktailCard from "./components/CocktailCard/CocktailCard";
+import Spinner from "../../UI/components/Spinner/Spinner";
+import OwnAlert from "../../UI/components/OwnAlert/OwnAlert";
 
 const MyCocktails: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const lauding = useAppSelector(selectCocktailsLauding);
   const cocktails = useAppSelector(selectCocktails);
 
   useEffect(() => {
@@ -30,10 +33,19 @@ const MyCocktails: React.FC = () => {
       justifyContent={"center"}
       flexWrap={"wrap"}
     >
-      {
-        cocktails.map((item) => {
-          return <CocktailCard key={item._id} item={item}/>;
-        })
+      {lauding
+        ? <Spinner/>
+        : cocktails.length
+          ? (
+            cocktails.map((item) => {
+              return <CocktailCard key={item._id} item={item}/>;
+            })
+          )
+          : (
+            <OwnAlert>
+              You don't have cocktails
+            </OwnAlert>
+          )
       }
     </Grid>
   );
