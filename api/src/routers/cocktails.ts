@@ -37,7 +37,18 @@ cocktailsRouter.post(
   });
 
 cocktailsRouter.get("/", async (req, res, next) => {
+  const query = req.query.user as string;
   try {
+    if (query) {
+      if (!mongoose.Types.ObjectId.isValid(query)) {
+        return res.status(422).send({error: "Not found User!!"});
+      }
+      const cocktailsById = await Cocktail.find({userID: query}).
+      select('userID name image isPublished');
+
+      return res.send(cocktailsById);
+    }
+
     const cocktails: Cocktail[] = await Cocktail.find().
     select('userID name image isPublished');
 
