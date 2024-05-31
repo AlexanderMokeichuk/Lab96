@@ -1,4 +1,4 @@
-import express, {Router} from "express";
+import express from "express";
 import auth, {RequestWithUser} from "../middleware/auth";
 import {clearImages, imagesUpload} from "../multer";
 import mongoose from "mongoose";
