@@ -1,12 +1,12 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {CocktailInForm, Ingredient} from "../../../../type";
-import {Box, Button, Grid, IconButton, TextField} from "@mui/material";
+import {Box, Button, Grid, IconButton, Snackbar, TextField} from "@mui/material";
 import FileInput from "../../../../UI/components/FileInput/FileInput";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { nanoid } from 'nanoid';
+import {nanoid} from "nanoid";
 import {useAppDispatch} from "../../../../app/hooks";
 import {postCocktail} from "../../cocktailsThunks";
-
+import CloseIcon from "@mui/icons-material/Close";
 
 const defaultCocktail: CocktailInForm = {
   name: "",
@@ -21,8 +21,13 @@ const defaultIngredients: Ingredient[] = [
 
 const AddNewCocktail: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [open, setOpen] = React.useState(false);
   const [formState, setFormState] = useState<CocktailInForm>(defaultCocktail);
   const [ingredients, setIngredients] = useState<Ingredient[]>(defaultIngredients);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const onChangeForm = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -45,6 +50,7 @@ const AddNewCocktail: React.FC = () => {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setOpen(true);
     await dispatch(postCocktail({...formState, ingredients: ingredients}));
     setFormState(defaultCocktail);
     setIngredients(defaultIngredients);
@@ -71,6 +77,20 @@ const AddNewCocktail: React.FC = () => {
     setIngredients(newIngredients);
   };
 
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}/>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small"/>
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <Grid
       container
@@ -80,6 +100,13 @@ const AddNewCocktail: React.FC = () => {
       borderRadius={4}
       mt={5}
     >
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Your cocktail is being checked by the administrator"
+        action={action}
+      />
       <form onSubmit={onSubmit}>
         <Grid
           item
@@ -113,6 +140,7 @@ const AddNewCocktail: React.FC = () => {
                     name={"name"}
                     label="Name"
                     required
+
                     sx={{
                       width: "60%",
                     }}
@@ -124,6 +152,7 @@ const AddNewCocktail: React.FC = () => {
                     name={"quantity"}
                     label="Quantity"
                     required
+
                     sx={{
                       width: "30%",
                     }}
@@ -132,7 +161,7 @@ const AddNewCocktail: React.FC = () => {
 
                   />
                   <IconButton onClick={() => deleteIngredients(ingredient.id)} aria-label="delete">
-                    <DeleteIcon />
+                    <DeleteIcon/>
                   </IconButton>
                 </Grid>
               );
